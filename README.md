@@ -39,14 +39,11 @@ Used R to analyze diabetes risk across three datasets, performing data integrati
 ### 11. **AirAware – Air Quality Health Impact Classification**
 Analyzed the relationship between pollution levels (PM2.5, NO2, CO) and hospitalization rates to predict health risks. Developed models using LightGBM, XGBoost, and Random Forest to classify risk levels. Findings support public health efforts and policy-making to mitigate air pollution effects.
 
-### 12. **DSC680 Term Project 1 Placeholder**
-[Add project details and description when available.]
+### 12. **DSC680 Term Project 2 Placeholder**
+[To Be Added : project details and description when available.]
 
-### 13. **DSC680 Term Project 2 Placeholder**
-[Add project details and description when available.]
-
-### 14. **DSC680 Term Project 3 Placeholder**
-[Add project details and description when available.]
+### 13. **DSC680 Term Project 3 Placeholder**
+[To Be Added : project details and description when available.]
 
 ## 🛠️ Tools & Technologies Used
 
