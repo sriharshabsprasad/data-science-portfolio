@@ -1,2 +1,52 @@
+# macOS
 .DS_Store
+
+# R
 .Rhistory
+.RData
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Environment files
+.env
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# Log files
+*.log
+
+# Temporary files
+*~
+*.swp
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+
+# Node.js
+node_modules/
+
+# Build artifacts
+build/
+dist/
+*.exe
+*.dll
+
+# Data files (if you don't want to track them)
+*.csv
+*.tsv
+*.json
+*.parquet
+
+# Any large files that should not be tracked
+*.zip
+*.tar.gz
+*.7z
