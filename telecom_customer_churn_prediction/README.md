@@ -21,6 +21,19 @@ telecom_customer_churn_prediction/ │ ├── data/ │ └── Customer Ch
 - Feature importance and SHAP value visualization
 - Model evaluation using Confusion Matrix, Precision, Recall, F1-Score
 
+## 📦 Installation
+
+```bash
+git clone https://github.com/sriharshabsprasad/data-science-portfolio.git
+cd data-science-portfolio/telecom_customer_churn_prediction
+```
+
+## ▶️ How to Run
+
+```bash
+jupyter notebook customer_churn_prediction.ipynb
+```
+
 ## 📦 Dataset
 - Source: [Iranian Churn Dataset - UCI](https://archive.ics.uci.edu/dataset/563/iranian+churn+dataset)
 

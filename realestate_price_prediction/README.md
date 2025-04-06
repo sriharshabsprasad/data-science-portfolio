@@ -22,6 +22,19 @@ realestate_price_prediction/ │ ├── data/ │ └── housing.csv ├�
 - Multiple regression models: Linear, Random Forest, SVM, Gradient Boosting
 - Model performance comparison (MAE, RMSE, R²)
 
+## 📦 Installation
+
+```bash
+git clone https://github.com/sriharshabsprasad/data-science-portfolio.git
+cd data-science-portfolio/realestate_price_prediction
+```
+
+## ▶️ How to Run
+
+```bash
+jupyter notebook real_estate_housing_price_prediction.ipynb
+```
+
 ## 📦 Dataset
 - Source: [Housing Prices Dataset - Kaggle](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
 

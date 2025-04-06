@@ -23,6 +23,19 @@ diabetes_prediction_analysis/ │ ├── data/ │ └── diabetes.csv ├
 - Linear regression (one and multiple variables)
 - Evaluation metrics like R² and RMSE
 
+## 📦 Installation
+
+```bash
+git clone https://github.com/sriharshabsprasad/data-science-portfolio.git
+cd data-science-portfolio/diabetes_prediction_analysis
+```
+
+## ▶️ How to Run
+
+```bash
+jupyter notebook diabetes_analysis_prediction.ipynb
+```
+
 ## 📦 Dataset
 - Source: [Pima Indians Diabetes Database - Kaggle](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database)
 
