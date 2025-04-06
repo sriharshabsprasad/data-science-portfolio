@@ -6,7 +6,7 @@ Welcome to my **Data Science Portfolio**! This repository showcases a collection
 
 ## 📂 Projects
 
-### 1. **Glucose Guardian – Diabetes Prediction and Analysis**
+### [1. **Glucose Guardian – Diabetes Prediction and Analysis**] (https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/diabetes_prediction_analysis)
 Analyzed the Pima Indian dataset to develop predictive models for diabetes diagnosis using regression techniques. Conducted data visualization, hypothesis testing, and feature importance analysis to understand the impact of clinical variables. Insights from the study can help in early detection and intervention of diabetes risk among women.
 
 ### 2. **Brick by Brick – Real Estate Price Prediction**
