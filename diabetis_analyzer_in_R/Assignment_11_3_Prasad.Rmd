@@ -1,0 +1,889 @@
+---
+title: "Diabetes Indicator"
+output: pdf_document
+date: "2024-05-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Sriharsha Prasad
+
+# Introduction
+
+Diabetes is a major cause of death worldwide, especially in the USA, and its numbers keep going up, affecting more and more people. This project wants to look into all the different things that can lead to diabetes and give people advice on how to lower their chances of getting it. By sharing tips on how to deal with these factors, we hope to make more people aware of the importance of preventing diabetes and help them stay healthy. In a world where staying healthy is so important, projects like this can really make a big difference.Diabetes research inherently involves analyzing large and complex datasets to uncover patterns, trends, and associations related to the condition. Data science techniques play a crucial role in diabetes research.
+
+# Research questions
+
+1. How do diet and exercise habits relate to the prevalence of diabetes?
+2. Does having high blood pressure raise the risk of diabetes?
+3. Is there a correlation between smoking and the risk of developing diabetes?
+4. Are there gender differences in susceptibility to diabetes?
+5. What is the optimal body weight and BMI range for reducing the risk of diabetes?
+6. How does a history of heart attack or stroke impact the likelihood of developing diabetes?
+7. Does having high cholesterol increase the risk of diabetes?
+8. Can drinking a lot of alcohol lead to diabetes?
+9. What factors make it more likely for someone to get diabetes?
+10. What lifestyle changes can effectively reduce the incidence of diabetes?
+
+# Approach
+
+I intend to perform an extensive examination of the datasets on diabetes and its contributing factors that are currently accessible in order to address the problem statement. To find patterns and correlations between the variables, this investigation will use statistical modeling, exploratory data analysis, data preprocessing and machine learning to forecast future. My goal is to acquire insight into the factors that drive the incidence of diabetes and develop prevention measures by looking at a variety of demographic, lifestyle, socioeconomic, and health-related factors and predict the future by providing useful analysis for people who can change their lifestyle to reduce Diabetes cases.
+
+# How your approach addresses (fully or partially) the problem.
+
+Using data science techniques to examine sizable and varied datasets pertaining to diabetes risk factors, preventative measures, illness management, and health outcomes is my suggested strategy for dealing with the diabetes issue. The following is how the strategy will deal with the issue in part:
+
+1. Data Acquisition and Loading : Datasets from various sources will be collected, integreated and loaded into R native format.
+2. Exploratory Data Analysis : I will perform Exploratory Data Analysis(EDA) to understand the charecteristics of the data, identify the patterns, trends and to gain more insights.
+3. Statistical Analysis:  I will analyze the finalized dataset to identify significant risk factors for diabetes using the descriptive and inferrential statistics.
+4. Machine Learning Modelling: Development of predictive models to forecast diabetes incidence and progression. 
+5. Report Creation:I will create a report to summarize the results of data analyses, provide context, and facilitate informed decision-making. 
+
+# Data
+
+Diabetes Health Indicators Dataset from the Behavioral Risk Factor Surveillance System (BRFSS) is the nation's premier system of health-related telephone surveys that collect state data about U.S. residents regarding their health-related risk behaviors, chronic health conditions, and use of preventive services. Established in 1984 with 15 states, BRFSS now collects data in all 50 states as well as the District of Columbia and three U.S. territories. BRFSS completes more than 400,000 adult interviews each year, making it the largest continuously conducted health survey system in the world. 3 data sets are available under this. 
+
+• Dataset 1: diabetes _ 012 _ health _ indicators _ BRFSS2015.csv 
+  
+• Dataset 2: diabetes _ binary _ 5050split _ health _ indicators _ BRFSS2015.csv 
+  
+• Dataset 3: diabetes _ binary _ health _ indicators _ BRFSS2015.csv 
+  
+Kaggle Link: https://www.kaggle.com/datasets/cdc/behavioral-risk-factor-surveillance-system 
+  
+The merged data set will have 21 features and 570k rows approximately. I will perform undersampling to reduce the number of rows and use it for the current project analysis.
+
+# Required Packages
+
+The important packages needed for this project are below: 
+
+• dplyr – A package for data manipulation and transformation, providing functions for filtering, summarizing, and joining datasets.
+
+• tidyr – A package for tidying messy data, including functions for reshaping datasets and handling missing values.
+
+• ggplot2 – A package for creating sophisticated and customizable data visualizations using the grammar of graphics approach.. 
+
+• rmarkdown – A package for creating dynamic documents that integrate R code, visualizations, and narrative text, allowing for reproducible research and automated report generation.
+
+• caret – A comprehensive package for machine learning that provides tools for building predictive models, assessing model performance, and tuning model parameters.
+
+
+
+# Plots and Table Needs
+
+• Plots such as histograms, bar charts, scatter plots, and heatmaps will be used for visualize distributions, relationships between variables.
+
+• Tables summarizing descriptive statistics, correlation matrices, and machine learning results will be used to provide quantitative insights into the research questions.
+
+
+# Questions for future steps
+
+• I may need to learn methods for feature selection, dimensionality reduction, and feature engineering to improve model performance and interpretability.
+
+• I may need to learn more about advanced techniques such as support vector machines, gradient boosting, and deep learning, which can be valuable for predictive modeling and risk stratification in diabetes analysis.
+
+# Implementation
+
+# Set the working directory
+```{r part0}
+# Get the current directory
+current_directory <- getwd()
+
+# Set the current directory as the working directory
+setwd(current_directory)
+
+# Construct the path to your data directory
+data_directory <- file.path(current_directory, "data")
+
+getwd()
+```
+
+# Import Libraries
+
+```{r part1}
+# Load  libraries
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(caret)
+library(psych)
+library(corrplot)
+
+```
+
+
+# How did you import and clean your data?
+
+## 1. Performed data acquisition and loaded into R data frame. 500 data samples from each data set was taken and used for the analysis and loaded as a r dataframe.
+## 2. Displayed the head, tail, structure and column names of the dataframe to get the high level understanding on the data
+## 3. Renamed the target feature as Diabetes_label for each dataframe to standardize the target label
+## 4. Merged 3 data frames to create a final dataframe
+## 5. Checked for missing data and handled it if there any by omitting the data with NA values
+## 6. Outlier Analysis
+
+
+## Step 1 - Data Acquisition and Loading
+## Step 2 - Display few rows and sturcture of the data 
+
+```{r part2}
+
+#Read dataset 1
+file_path <- file.path(data_directory, "diabetes_012_health_indicators_BRFSS2015.csv")
+
+diabetes_indicator_df <- read_csv(file_path)
+
+#Display Top 6 rows
+head(diabetes_indicator_df)
+
+#Display Bottom 6 rows
+tail(diabetes_indicator_df)
+
+#Display the column names
+colnames(diabetes_indicator_df)
+
+#Display Data structure 
+str(diabetes_indicator_df)
+
+#Read dataset 2
+
+file_path2 <- file.path(data_directory, "diabetes_binary_5050split_health_indicators_BRFSS2015.csv")
+
+
+diabetes_binary_5050split_df <- read_csv(file_path2)
+
+#Display Top 6 rows
+head(diabetes_binary_5050split_df)
+
+#Display Bottom 6 rows
+tail(diabetes_binary_5050split_df)
+
+#Display the column names
+colnames(diabetes_binary_5050split_df)
+
+#Display Data structure 
+str(diabetes_binary_5050split_df)
+
+
+#Read dataset 3
+file_path3 <- file.path(data_directory, "diabetes_binary_health_indicators_BRFSS2015.csv")
+
+diabetes_binary_health_indicators_df <- read_csv(file_path3)
+
+#Display Top 6 rows
+head(diabetes_binary_health_indicators_df)
+
+#Display Bottom 6 rows
+tail(diabetes_binary_health_indicators_df)
+
+#Display the column names
+colnames(diabetes_binary_health_indicators_df)
+
+#Display Data structure 
+str(diabetes_binary_health_indicators_df)
+
+
+```
+
+
+## Step 3 - Rename the target feature as "Diabetes_label
+```{r part3}
+
+names(diabetes_indicator_df)[names(
+  diabetes_indicator_df) == "Diabetes_012"] <- "Diabetes_label"
+names(diabetes_binary_5050split_df)[names(
+  diabetes_binary_5050split_df) == "Diabetes_binary"] <- "Diabetes_label"
+names(diabetes_binary_health_indicators_df)[names(
+  diabetes_binary_health_indicators_df) == "Diabetes_binary"] <- "Diabetes_label"
+
+```
+
+## Step 4 - Merge the 3 dataframes 
+```{r part4}
+diabetes_data <- bind_rows(diabetes_indicator_df, 
+                          diabetes_binary_5050split_df,
+                          diabetes_binary_health_indicators_df
+                          )
+#Display Data structure 
+
+str(diabetes_data)
+
+
+```
+
+## Step 5 - Handle Missing Data
+```{r part5}
+# Calculate the number of missing values in each column
+missing_per_column <- colSums(is.na(diabetes_data))
+
+# Calculate the percentage of missing values in each column
+missing_percentage_per_column <- colMeans(is.na(diabetes_data)) * 100
+
+# Calculate the number of missing values in the entire dataframe
+total_missing <- sum(is.na(diabetes_data))
+
+# Calculate the percentage of missing values in the entire dataframe
+total_missing_percentage <- mean(is.na(diabetes_data)) * 100
+
+# Display the results
+print("Number of missing values per column:")
+print(missing_per_column)
+
+print("Percentage of missing values per column:")
+print(missing_percentage_per_column)
+
+print(paste("Total number of missing values:", total_missing))
+print(paste("Percentage of total missing values:", round(total_missing_percentage, 2), "%"))
+
+# Summary of missing data
+missing_summary <- diabetes_data %>%
+  summarise_all(~ sum(is.na(.))) %>%
+  pivot_longer(cols = everything(), names_to = "Column", values_to = "MissingCount") %>%
+  mutate(Percentage = round(MissingCount / nrow(diabetes_data) * 100, 2))
+
+print("Summary of missing data:")
+print(missing_summary)
+
+# Delete Missing data 
+na.omit(diabetes_data)
+
+
+```
+
+### No missing data present in the dataset, that is very good for our analysis
+
+
+## Step 5 - Outlier Analysis
+
+```{r part6}
+
+# Create boxplots for numerical variables to identify outliers
+numerical_vars <- c("BMI", "Age", "MentHlth", "PhysHlth")
+
+for (var in numerical_vars) {
+  p <- ggplot(diabetes_data, aes_string(x = "Diabetes_label", y = var)) +
+    geom_boxplot() +
+    labs(title = paste("Boxplot of", var, "by Diabetes status"),
+         x = "Diabetes", y = var)
+  print(p)
+}
+
+# Function to detect outliers using IQR method
+detect_outliers <- function(data, var) {
+  Q1 <- quantile(data[[var]], 0.25)
+  Q3 <- quantile(data[[var]], 0.75)
+  IQR <- Q3 - Q1
+  lower_bound <- Q1 - 1.5 * IQR
+  upper_bound <- Q3 + 1.5 * IQR
+  outliers <- which(data[[var]] < lower_bound | data[[var]] > upper_bound)
+  return(outliers)
+}
+
+# Detecting outliers for numerical variables
+outliers_list <- lapply(numerical_vars, detect_outliers, data = diabetes_data)
+
+# Print the number of outliers detected for each variable
+names(outliers_list) <- numerical_vars
+lapply(outliers_list, length)
+
+# Function to cap outliers to a specific threshold
+cap_outliers <- function(data, var) {
+  Q1 <- quantile(data[[var]], 0.25)
+  Q3 <- quantile(data[[var]], 0.75)
+  IQR <- Q3 - Q1
+  lower_bound <- Q1 - 1.5 * IQR
+  upper_bound <- Q3 + 1.5 * IQR
+  data[[var]] <- ifelse(data[[var]] < lower_bound, lower_bound, data[[var]])
+  data[[var]] <- ifelse(data[[var]] > upper_bound, upper_bound, data[[var]])
+  return(data)
+}
+
+# Cap outliers for each numerical variable
+cleaned_data <- diabetes_data
+for (var in numerical_vars) {
+  cleaned_data <- cap_outliers(cleaned_data, var)
+}
+
+```
+
+# What do you not know how to do right now that you need to learn to import and cleanup your dataset?
+
+## I didn't know how to handle outlier without removing the rows which contain the outliers before. 
+## I did learn to hanlde outlier by using transformations technique by capping values at a certain threshold. This helps to retain data rather than remove them. Hence learnt to implement it in programatical way and generated the cleaned data.
+
+
+# What does the final data set look like?
+
+
+```{r part7}
+#Final cleaned dataset looks like this
+
+#Display Top 6 rows
+head(cleaned_data)
+
+#Display Bottom 6 rows
+tail(cleaned_data)
+
+# Display the summary
+summary(cleaned_data)
+
+```
+
+## Diabetes Label Description :
+### * 0 = no diabetes 
+### * 1 = prediabetes 
+### * 2 = diabetes
+
+# What information is not self-evident?
+
+### 1. Relationship between the variables (eg., BMI, HighBP HighChol) and their combined effect on diabetes prevalence are not self-evident.
+### 2. If subgroups can help to reveal important information on diabetes is not self evident. Example, Are there any specific age groups more vulnerble to diabetes? etc.,
+
+
+# What are different ways you could look at this data?
+
+### 1. By calculating the groupwise summaries
+### 2. Segmenting the data by demographic variables
+```{r part8}
+
+groupwise_summary <- cleaned_data %>%
+  group_by(Diabetes_label) %>%
+  summarise(
+    average_BMI = mean(BMI, na.rm = TRUE),
+    average_Age = mean(Age, na.rm = TRUE),
+    average_PhysActivity = mean(PhysActivity, na.rm = TRUE),
+    average_HighBP = mean(HighBP, na.rm = TRUE),
+    proportion_Smokers = mean(Smoker, na.rm = TRUE),
+    average_HighChol = mean(HighChol, na.rm = TRUE),
+    count = n()
+  )
+
+print(groupwise_summary)
+
+```
+### The above information helped in understanding how different vairables relate to diabetes status. Impact of BMI, Age, Physical Activity, HighBP, Smoking, HighAlcoal on Diabetes recorded in the above table.
+
+
+```{r part9}
+
+# Segment data by Education level
+education_summary <- cleaned_data %>%
+  group_by(Education) %>%
+  summarise(
+    average_BMI = mean(BMI, na.rm = TRUE),
+    diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE),
+    count = n()
+  )
+
+print(education_summary)
+
+```
+
+# How do you plan to slice and dice the data?
+
+### Following activities were already performed to slice and dice the data.
+### * Merged data - 3 different datasets combined into one single dataframe by keeping the standard name for target feature
+### * Sliced the data to remove outliers
+### * Created a groupwise summary to check the impact of various features on diabetes status
+### * Additionally, I am doing segmenting the demographic variable Gender to identify any differences in diabets prevalence, BMI and other health indicateors between males and females
+
+
+```{r part10}
+
+# Segmentation by Gender
+gender_summary <- cleaned_data %>%
+  group_by(Sex) %>%
+  summarise(
+    average_BMI = mean(BMI, na.rm = TRUE),
+    diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE),
+    count = n()
+  )
+
+print(gender_summary)
+
+# Visualization of BMI by Gender
+ggplot(gender_summary, aes(x = as.factor(Sex), y = average_BMI)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average BMI by Gender", x = "Gender", y = "Average BMI")
+
+```
+
+# How could you summarize your data to answer key questions?
+
+## Based on the summerized values following are the key pointers - 
+### * BMI should be maintained around 27.5 on an average to reduce th chances of diabetes
+### * A person on average does Physcial Activity than the one who is idle less prone to diabetes
+### * Average HighBP should be less than 0.35 to avaoid the chances of getting diabetes
+### * The summerized results for Age feature was calculated but as the dataset contains the  below 25, I am not considering it here.
+
+# What types of plots and tables will help you to illustrate the findings to your questions?
+
+## 1. How do diet and exercise habits relate to the prevalence of diabetes?
+
+```{r part11}
+
+  # Bar plots for diet and exercise habits vs. Diabetes_label
+ggplot(cleaned_data, aes(x = factor(PhysActivity), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Physical Activity", y = "Proportion", fill = "Diabetes ") +
+  theme_minimal()
+
+ggplot(cleaned_data, aes(x = factor(Fruits), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Fruits Consumption", y = "Proportion", fill = "Diabetes ") +
+  theme_minimal()
+
+ggplot(cleaned_data, aes(x = factor(Veggies), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Vegetables Consumption", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+  
+```
+###  Graphs shows that maitaining healthy diets and doing physical activities helps to reduce the risk of getting diabetes
+
+
+## 2. Does having high blood pressure raise the risk of diabetes?
+
+```{r part12}
+  # Bar plot for HighBP vs. Diabetes_label
+ggplot(cleaned_data, aes(x = factor(HighBP), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "High Blood Pressure", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+
+# Bar Plot - High Blood Pressure vs. Diabetes Prevalence
+blood_pressure_summary <- cleaned_data %>%
+  group_by(HighBP) %>%
+  summarise(diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE))
+
+ggplot(blood_pressure_summary, aes(x = factor(HighBP), y = diabetes_prevalence)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Diabetes Prevalence by High Blood Pressure",
+       x = "High Blood Pressure",
+       y = "Diabetes Prevalence")
+
+# Summary Table - Blood Pressure and Diabetes
+blood_pressure_summary_table <- cleaned_data %>%
+  group_by(Diabetes_label) %>%
+  summarise(mean_blood_pressure = mean(HighBP, na.rm = TRUE),
+            sd_blood_pressure = sd(HighBP, na.rm = TRUE))
+
+print(blood_pressure_summary_table)
+
+```
+### Graphs and table shows that keeping blood pressure in control helps to reduce the risk of getting diabetes or to control the diabetes
+
+
+## 3. Is there a correlation between smoking and the risk of developing diabetes?
+
+```{r part13}
+# Bar plot for Smoker vs. Diabetes_label
+ggplot(cleaned_data, aes(x = factor(Smoker), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Smoking Status", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+
+# Bar Plot - Smoking Status vs. Diabetes Prevalence
+smoking_summary <- cleaned_data %>%
+  group_by(Smoker) %>%
+  summarise(diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE))
+
+ggplot(smoking_summary, aes(x = factor(Smoker), y = diabetes_prevalence)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Diabetes Prevalence by Smoking Status",
+       x = "Smoking Status",
+       y = "Diabetes Prevalence")
+
+# Contingency Table - Smoking Status and Diabetes
+contingency_table <- table(cleaned_data$Smoker, diabetes_data$Diabetes_label)
+print(contingency_table)
+
+```
+
+### Graphs shows that the smoking is leading indicator for Diabetes
+
+
+## 4. Are there gender differences in susceptibility to diabetes?
+
+```{r part14}
+# Bar plot for Sex vs. Diabetes_label
+ggplot(cleaned_data, aes(x = factor(Sex), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Gender", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+
+# Bar Plot - Gender vs. Diabetes Prevalence
+gender_summary <- cleaned_data %>%
+  group_by(Sex) %>%
+  summarise(diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE))
+
+ggplot(gender_summary, aes(x = factor(Sex), y = diabetes_prevalence)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Diabetes Prevalence by Gender - 0-Female, 1- Male",
+       x = "Gender",
+       y = "Diabetes Prevalence")
+
+# Contingency Table - Gender and Diabetes
+contingency_table <- table(cleaned_data$Sex, cleaned_data$Diabetes_label)
+print(contingency_table)
+
+```
+### Graphs shows that proportaion of males having Diabetes is higher than females.
+
+
+
+## 5. What is the optimal body weight and BMI range for reducing the risk of diabetes?
+
+```{r part15}
+
+# Scatter Plot - BMI Distribution by Diabetes Status
+ggplot(cleaned_data, aes(BMI, Diabetes_label, color=Diabetes_label)) + geom_point() +
+labs(
+title = "BMI vs. Diabetes Prevalence",
+x = "BMI",
+y = "Diabetes Prevalence"
+)
+
+
+
+# Density Plot - BMI Distribution by Diabetes Status
+ggplot(cleaned_data, aes(x = BMI, fill = factor(Diabetes_label))) +
+  geom_density(alpha = 0.5) +
+  labs(title = "BMI Distribution by Diabetes Prevalence",
+       x = "BMI",
+       fill = "Diabetes Prevalence")
+
+# Summary Table - BMI Statistics by Diabetes Status
+summary_table <- cleaned_data %>%
+  group_by(Diabetes_label) %>%
+  summarise(mean_bmi = mean(BMI),
+            median_bmi = median(BMI),
+            min_bmi = min(BMI),
+            max_bmi = max(BMI))
+
+print(summary_table)
+
+```  
+
+## Graphs and Table shows that there is a direct relationshiop beteen body weight and Diabetes. Keeping a median BMI - 27 would help to reduce the risk of being Diabetic.
+
+## 6. How does a history of heart attack or stroke impact the likelihood of developing diabetes?
+
+```{r part16}
+
+# Bar plots for HeartDiseaseorAttack and Stroke vs. Diabetes_binary
+ggplot(cleaned_data, aes(x = factor(HeartDiseaseorAttack), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Heart Disease or Attack", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+ggplot(cleaned_data, aes(x = factor(Stroke), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Stroke", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+
+# Bar Plot - History of Heart Attack vs. Diabetes Prevalence
+heart_stroke_summary <- cleaned_data %>%
+  group_by(HeartDiseaseorAttack) %>%
+  summarise(diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE))
+
+ggplot(heart_stroke_summary, aes(x = factor(HeartDiseaseorAttack), y = diabetes_prevalence)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Diabetes Prevalence by History of Heart Attack",
+       x = "History of Heart Attack",
+       y = "Diabetes Prevalence")
+
+# Contingency Table - History of Heart Attack and Diabetes
+contingency_table <- table(cleaned_data$HeartDiseaseorAttack, cleaned_data$Diabetes_label)
+print(contingency_table)
+
+# Contingency Table - History of Stroke and Diabetes
+contingency_table <- table(cleaned_data$Stroke, cleaned_data$Diabetes_label)
+print(contingency_table)
+
+```  
+
+## Graphs and Table shows that the Coronary Heart Disease is one of the leading indicators for Diabetes. Also if a pearson had a Stroke there is high likely that the person can be Diabetic or prone to Diabetes.
+
+
+## 7. Does having high cholesterol increase the risk of diabetes?
+
+```{r part17}
+# Bar plot for HighChol vs. Diabetes_binary
+ggplot(cleaned_data, aes(x = factor(HighChol), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "High Cholesterol", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+
+# Bar Plot - High Cholesterol vs. Diabetes Prevalence
+cholesterol_summary <- cleaned_data %>%
+  group_by(HighChol) %>%
+  summarise(diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE))
+
+ggplot(cholesterol_summary, aes(x = factor(HighChol), y = diabetes_prevalence)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Diabetes Prevalence by High Cholesterol Status",
+       x = "High Cholesterol",
+       y = "Diabetes Prevalence")
+
+# Contingency Table - High Cholesterol and Diabetes
+contingency_table <- table(cleaned_data$HighChol, diabetes_data$Diabetes_label)
+print(contingency_table)
+
+```   
+## Graphs and Table shows that there is a strong relationship between High Cholestrol and Diabetes. Reducing the Cholestral would help to avoid the risk of being Diabetic
+
+
+## 8. Can drinking a lot of alcohol lead to diabetes?
+
+
+```{r part18}
+
+# Bar plot for HvyAlcoholConsump vs. Diabetes_label
+ggplot(cleaned_data, aes(x = factor(HvyAlcoholConsump), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(x = "Heavy Alcohol Consumption", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+# Bar Plot - Heavy Alcohol Consumption vs. Diabetes Prevalence
+alcohol_summary <- cleaned_data %>%
+  group_by(HvyAlcoholConsump) %>%
+  summarise(diabetes_prevalence = mean(Diabetes_label, na.rm = TRUE))
+
+ggplot(alcohol_summary, aes(x = factor(HvyAlcoholConsump), y = diabetes_prevalence)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Diabetes Prevalence by Heavy Alcohol Consumption",
+       x = "Heavy Alcohol Consumption",
+       y = "Diabetes Prevalence")
+
+# Contingency Table - Heavy Alcohol Consumption and Diabetes
+contingency_table <- table(cleaned_data$HvyAlcoholConsump, cleaned_data$Diabetes_label)
+print(contingency_table)
+
+# Density Plot - BMI Distribution by Heavy Alcohol Consumption and Diabetes Status
+ggplot(cleaned_data, aes(x = BMI, fill = factor(HvyAlcoholConsump))) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~ Diabetes_label) +
+  labs(title = "BMI Distribution by Heavy Alcohol Consumption and Diabetes Status",
+       x = "BMI",
+       fill = "Heavy Alcohol Consumption") +
+  scale_fill_discrete(labels = c("Non-Heavy Drinker", "Heavy Drinker"))
+
+```    
+## Graphs and Table shows that there is a negative relationship between High Alcohol Consumption and Diabetes. I strongly believe that adding more data would change the results.
+
+
+
+## 9. What factors make it more likely for someone to get diabetes?
+```{r part19}
+
+
+# Select numeric columns for correlation analysis
+numeric_columns <- cleaned_data %>%
+  select(Diabetes_label, HighBP, HighChol, BMI, Smoker, Stroke, HeartDiseaseorAttack, PhysActivity, Fruits, Veggies, HvyAlcoholConsump, GenHlth, MentHlth, PhysHlth, DiffWalk, Age, Education, Income)
+
+# Calculate correlation matrix
+correlation_matrix <- cor(numeric_columns, use = "complete.obs")
+
+# Plot correlation heatmap
+corrplot(correlation_matrix, method = "color", type = "upper", tl.cex = 0.6)
+
+``` 
+
+## Correlation Chart Shows that the factors HighBP, High Cholestral, BMI, Heart Disease or Attach, General Health, Age, Difficultiness in Walking makie it more likely for someone to get diabetes.
+
+
+## 10. What lifestyle changes can effectively reduce the incidence of diabetes?
+
+```{r part20}
+
+# Examine the relationships between lifestyle factors and Diabetes_label
+# Physical Activity, Diet (Fruits, Veggies), Smoking, Alcohol consumption
+
+# Combine multiple factors in a single plot
+cleaned_data %>%
+  gather(key = "variable", value = "value", PhysActivity, Fruits, Veggies, Smoker, HvyAlcoholConsump) %>%
+  ggplot(aes(x = factor(value), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  facet_wrap(~ variable, scales = "free") +
+  labs(x = "Value", y = "Proportion", fill = "Diabetes") +
+  theme_minimal()
+
+
+# Create a new variable that combines multiple healthy behaviors
+cleaned_data$HealthyLifestyle <- with(cleaned_data, PhysActivity & Fruits & Veggies & !Smoker & !HvyAlcoholConsump)
+
+# Bar Plot - Combined Healthy Lifestyle vs Diabetes Status
+ggplot(cleaned_data, aes(x = factor(HealthyLifestyle), fill = factor(Diabetes_label))) +
+  geom_bar(position = "fill") +
+  labs(title = "Diabetes Prevalence by Combined Healthy Lifestyle",
+       x = "Healthy Lifestyle (0 = No, 1 = Yes)",
+       y = "Proportion",
+       fill = "Diabetes Status") 
+                   
+```     
+
+
+## Graphs shows that having a proper diet with Veggies, Fruits and Doing Physical Activities Regularly and taking General health checkups and avoiding Smooking would help to reduce the incidence of diabetes.
+
+
+# Do you plan on incorporating any machine learning techniques to answer your research questions? Explain.
+
+## Yes, Below are the details on machine learning model implementation -
+### Data acquisition, loading, and preparation steps were done in the above stage
+### Train-Test Split: Split the data into training and testing sets to evaluate model performance.
+### Development of Multi class Logistic regression model by taking all the inputs from the cleaning data and target feature as Diabetes_Label
+### Perform model evaluation using the below metrics - 
+### * Accuracy, Precision, Recall, F1-Score: Evaluate models using these metrics to understand their performance.
+### * ROC-AUC: Plot the Receiver Operating Characteristic (ROC) curve and calculate the Area Under the Curve (AUC) to assess model performance.
+
+```{r part21}
+
+library(caret)
+library(pROC)
+
+
+# Split data into training and testing sets
+set.seed(123)
+trainIndex <- createDataPartition(cleaned_data$Diabetes_label, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+trainData <- diabetes_data[ trainIndex,]
+testData  <- diabetes_data[-trainIndex,]
+
+# Train a logistic regression model
+logistic_model <- glm(Diabetes_label~ ., data = trainData, family = gaussian)
+
+# Predict on the test set
+predictions <- predict(logistic_model, newdata = testData, type = "response")
+predicted_classes <- ifelse(predictions > 0.5, 1, 0)
+
+# Evaluate the model
+confusionMatrix(factor(predicted_classes), factor(testData$Diabetes_label))
+
+# ROC Curve
+roc_curve <- roc(testData$Diabetes_label, predictions)
+plot(roc_curve)
+auc(roc_curve)
+```   
+
+# What questions do you have now, that will lead to further analysis or additional steps?
+
+## As we conclude this initial analysis, several questions for further exploration are - 
+### 1. What are the other factors contribute to Diabetis?
+### 2. Does Family Health History and Ethicity can be considered as prominient factors for Diabetes?
+### 3. What are the common commorbidities associated with diabetes, and how do they impact disease progression? 
+### 4. How to fine tune the machine learning model and improve the model performance?
+### 5. How to explain the model to the health care representatives?
+
+
+\newpage
+
+# Introduction
+
+Diabetes is a chronic health condition that significantly impacts the quality of life and healthcare costs worldwide. It is one of the leading causes of death worldwide and especially in the USA. Understanding the factors that contribute to the prevalence of diabetes is crucial for developing effective prevention and intervention strategies. This research aims to analyze various lifestyle, demographic, and health-related factors to identify patterns and relationships that influence diabetes risk and based on the results let people know how to prevent diabetes by altering the affecting factors.
+
+In a world where staying healthy is so important, projects like this can really make a big difference.Diabetes research inherently involves analyzing large and complex datasets to uncover patterns, trends, and associations related to the condition. Data science techniques play a crucial role in diabetes research.
+
+
+# The problem statement you addressed
+
+The primary objective of this research is to uncover the key factors associated with the prevalence of diabetes. I addressed the Diabetes issue by analyzing the various factors such as BMI, Physical Activity, Diet, Exercise, Smoking and Alcohol Consumption habits, Age, Sex,  Heart Disease or Attack, Stroke, and Cholesterol.
+
+* Specifically, I answered the following research questions:  
+
+1. How do diet and exercise habits relate to the prevalence of diabetes?
+2. Does having high blood pressure raise the risk of diabetes?
+3. Is there a correlation between smoking and the risk of developing diabetes?
+4. Are there gender differences in susceptibility to diabetes?
+5. What is the optimal body weight and BMI range for reducing the risk of diabetes?
+6. How does a history of heart attack or stroke impact the likelihood of developing diabetes?
+7. Does having high cholesterol increase the risk of diabetes?
+8. Can drinking a lot of alcohol lead to diabetes?
+9. What factors make it more likely for someone to get diabetes?
+10. What lifestyle changes can effectively reduce the incidence of diabetes? 
+
+
+# How I addressed this problem statement
+
+## Data Used
+The dataset used for this analysis contains various health and lifestyle variables. Key variables include:
+
+- `Diabetes_label`- No diabetes(0), Pre diabetes (1), Diabetes(2)
+- `HighBP`, `HighChol`, `CholCheck`, `BMI`, `Smoker`, `Stroke`, `HeartDiseaseorAttack`, `PhysActivity`, `Fruits`, `Veggies`, `HvyAlcoholConsump`, `AnyHealthcare`, `NoDocbcCost`, `GenHlth`, `MentHlth`, `PhysHlth`, `DiffWalk`, `Sex`, `Age`, `Education`, `Income`.
+
+
+## Methodology Employed
+
+1. Performed data acquisition and loaded into R data frame. 500 data samples from each data set was taken and used for the analysis and loaded as a r data frame.
+2. Displayed the head, tail, structure and column names of the dataframe to get the high level understanding on the data
+3. Renamed the target feature as Diabetes_label for each dataframe to standardize the target label
+4. Merged 3 data frames to create a final dataframe
+5. Checked for missing data and handled it if there any by omitting the data with NA values
+6. Performed outlier Analysis by detecting the outliers and developed a function to cap outliers to a specific threshold
+7. Analyzed the data and visualized it in the form of different graphs and charts to figure out the important factors that are affecting diabetes
+8. plotted the graphs with Diabetes on Y axis and different factors on X-axis and analyzed them by performing univariate, bivariate and multivariate analysis
+9. Developed a logistic regression model by training the model using the train data set and evaluated on the validation data set and generated the model evaluation metrics such as accuracy, precision, recall, AUC- ROC curve.
+10. Finally provided useful analysis for people who can change their lifestyle to reduce Diabetes cases.
+
+
+# Analysis
+
+The analysis of various factors on Diabetes with the sample data that I took is provided below:
+
+## Key Insights
+1. **Diet and Exercise**: Regular physical activity and a diet rich in fruits and vegetables are associated with a lower prevalence of diabetes.
+2. **High Blood Pressure**: Individuals with high blood pressure have a higher risk of developing diabetes. Average HighBP should be less than 0.35 to avoid the chances of getting diabetes.
+3. **Smoking**: There is a positive correlation between smoking and the risk of diabetes.
+4. **Gender Differences**: Males are more susceptible to diabetes compared to females.
+5. **BMI and Body Weight**: Maintaining a BMI within the range of 18.5 to 24.9 is optimal for reducing diabetes risk. The grouped summary indicates that BMI should be maintained around 27.5 in order to reduce the chances of Diabetes.
+6. **Heart Attack and Stroke**: A history of heart attack or stroke significantly increases the likelihood of diabetes.
+7. **High Cholesterol**: High cholesterol is a significant risk factor for diabetes.
+8. **Alcohol Consumption**: Heavy alcohol consumption is associated with a higher risk of diabetes.
+9. **Age**: As the individual gets older, chances of getting Diabetes is more.
+10. **Key Risk Factors**: High BP, smoking, high BMI, high cholesterol, and heavy alcohol consumption are major contributors to diabetes risk.
+11. **Lifestyle Changes**: Increasing physical activity, improving diet, and reducing smoking and alcohol consumption can effectively reduce diabetes incidence.
+
+
+# Implications
+
+1. It Implies that all the individuals need to take precautions to not get effected by Diabetes as there are certain factors which directly or indirectly causes Diabetes.
+2. It is better to understand the factors that effect Diabetes and correct their lifestyle to lead a healthy life.
+3. Overall, For healthcare providers and policymakers, these insights highlight the importance of promoting healthy lifestyles to prevent diabetes. For individuals, the findings provide actionable steps to reduce their diabetes risk, such as engaging in regular physical activity, eating a balanced diet, and avoiding smoking and excessive alcohol consumption.
+
+
+# Limitations
+
+
+1. The dataset used has only 1500 samples, which may limit the generalizability of the findings.
+2. The data is self-reported, which can introduce biases and inaccuracies.
+3. The analysis is based on cross-sectional data, making it difficult to establish causality.
+4. The dataset does not include all possible risk factors for diabetes, such as genetic predisposition.
+5. Could not analyze all the factors affecting diabetes.
+6. Developed only the Logistic regression model to fit the data. Hence various other models with non-linearity can be tried and tested for better results.
+
+
+# Concluding Remarks
+
+1. This research provides valuable insights into the factors influencing diabetes risk and highlights potential areas for intervention. 
+  * An individual with High BP/cholesterol can lower blood Pressure/cholesterol with certain medications and diet restrictions.
+  * An individual can improve the Physical activity.
+Smoking can be avoided.
+  * A person with previous Heart Disease or Attack has to take more precautions, going to a doctor as much as needed.
+  * As the individual gets older more precaution has to be taken such as annual physical doctor
+2. Future work could involve expanding the dataset, incorporating longitudinal data to establish causal relationships, and using more sophisticated machine learning models to enhance prediction accuracy.
+3. By addressing the limitations and building on the current analysis, we can develop more effective strategies for diabetes prevention and management, ultimately improving public health outcomes.
+
+
+# Referrences
+
+Data set from the Kaggle: https://www.kaggle.com/datasets/cdc/behavioral-risk-factor-surveillance-system 
+
