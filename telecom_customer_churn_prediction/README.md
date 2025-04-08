@@ -1,3 +1,9 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
 # Stay or Leave? – Telecom Customer Churn Prediction
 
 ## 🧠 Project Overview
