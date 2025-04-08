@@ -56,11 +56,12 @@ Created predictive models using Logistic Regression, Random Forest, and KNN to c
 ### 10. **Diabetes Analyzer in R**
 Used R to analyze diabetes risk across three datasets, performing data integration, visualization, and pattern recognition. Derived correlations between health parameters and diabetes probability. This project highlights how statistical modeling in R can uncover health insights.
 
-*Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/diabetis_analyzer_in_R)
+*Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/diabetes_analyzer_in_R)
 
 ### 11. **AirAware – Air Quality Health Impact Classification**
 Analyzed the relationship between pollution levels (PM2.5, NO2, CO) and hospitalization rates to predict health risks. Developed models using LightGBM, XGBoost, and Random Forest to classify risk levels. Findings support public health efforts and policy-making to mitigate air pollution effects.
-[To Be Added : Code when available - Placeholder for DSC680 Project 1.]
+
+*Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/airquality_health_impact_classification)
 
 ### 12. **DSC680 Term Project 2 Placeholder**
 [To Be Added : project details and description when available.]
