@@ -63,8 +63,11 @@ Analyzed the relationship between pollution levels (PM2.5, NO2, CO) and hospital
 
 *Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/airquality_health_impact_classification)
 
-### 12. **DSC680 Term Project 2 Placeholder**
-[To Be Added : project details and description when available.]
+### 12. **Driven to Predict – Car Insurance Claim Predictionr**
+Developed a machine learning model to predict the likelihood of car insurance claims using vehicle specifications, policy details, and safety features. Applied feature engineering and compared models like Logistic Regression, Random Forest, XGBoost, LightGBM and Voting Classifier to optimize prediction accuracy. This project helps insurance providers enhance underwriting, pricing, and risk management strategies.
+
+*Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/car_insurance_claim_prediction)
+                    
 
 ### 13. **DSC680 Term Project 3 Placeholder**
 [To Be Added : project details and description when available.]
