@@ -69,13 +69,15 @@ Developed a machine learning model to predict the likelihood of car insurance cl
 *Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/car_insurance_claim_prediction)
                     
 
-### 13. **DSC680 Term Project 3 Placeholder**
-[To Be Added : project details and description when available.]
+### 13. **Fake or Fact? – Building a Robust AI System for News Verification**
+Developed a fake news classification system using machine learning and deep learning models. Combined TF-IDF and GloVe embeddings to extract semantic and frequency-based text features. Models include Logistic Regression, Random Forest, XGBoost, 1D-CNN and a BiLSTM deep learning model. The system provides robust predictions to combat misinformation in digital media.
+
+*Dive into the Code:* [Explore the Source](https://github.com/sriharshabsprasad/data-science-portfolio/tree/main/fake_news_detection)
 
 ## 🛠️ Tools & Technologies Used
 
 - **Programming Languages**: Python, R
-- **Libraries & Frameworks**: Pandas, NumPy, Scikit-learn, TensorFlow, Keras, Matplotlib, Seaborn, Plotly, Statsmodels, dplyr, ggplot2
+- **Libraries & Frameworks**: Pandas, NumPy, Scikit-learn, TensorFlow, Keras, Matplotlib, Seaborn, Plotly, Statsmodels, dplyr, ggplot2, Nltk, Glove
 - **Machine Learning**: Classification, Regression, Clustering, Time Series Analysis, Recommendation Systems, Image Classification, Natural Language Processing
 - **Tools**: Jupyter Notebook, Google Colab,R Studio, VS Code, Git, GitHub
 
