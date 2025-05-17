@@ -48,28 +48,3 @@ git clone https://github.com/sriharshabsprasad/data-science-portfolio.git
 cd data-science-portfolio/fake_news_detection
 jupyter notebook
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 🔍 Results
-
-
-## 🚀 Getting Started
-```bash
-git clone https://github.com/sriharshabsprasad/data-science-portfolio.git
-cd fake_news_detection
-pip install -r requirements.txt
-jupyter notebook
